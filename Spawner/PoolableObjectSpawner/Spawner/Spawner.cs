@@ -48,9 +48,11 @@ public abstract class Spawner<T, P, A> : MonoBehaviour where T : PoolableObjectA
     {
     }
 
+    protected abstract IPoolGroup<PoolableObject> GetPoolGroup(string poolGroupName);
+
     protected P Spawn(T arguments)
     {
-        IPoolGroup<PoolableObject> poolGroup = PoolGroupsManager.Instance.GetPoolGroup
+        IPoolGroup<PoolableObject> poolGroup = GetPoolGroup
             (arguments.PoolableObjectGroupNameIndex.PoolGroupName);
 
         PoolableObject poolableObject = poolGroup.Pools
