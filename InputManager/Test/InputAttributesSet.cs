@@ -4,4 +4,6 @@
     public static InputAttribute WalkDown = new InputAttribute("Walk.Down");
     public static InputAttribute WalkLeft = new InputAttribute("Walk.Left");
     public static InputAttribute WalkRight = new InputAttribute("Walk.Right");
+
+    public static InputAttribute WalkFree = new InputAttribute("Walk.Free");
 }

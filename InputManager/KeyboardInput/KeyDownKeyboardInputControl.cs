@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyDownKeyboardInputControl : KeyboardInputControl
+public class KeyDownKeyboardInputControl : KeyboardInputControl<InputArguments>
 {
     private KeyPressType _keyPressType;
 

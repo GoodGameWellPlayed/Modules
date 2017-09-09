@@ -1,22 +1,33 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
-    private InputDictionary _inputDictionary;
+    private Dictionary<Type, object> _commonDictionary;
 
     private void Start()
     {
-        _inputDictionary = new InputDictionary();
+        _commonDictionary = new Dictionary<Type, object>();
 
-        _inputDictionary.Add(InputAttributesSet.WalkDown, new KeyboardInputControl(KeyCode.DownArrow));
-        _inputDictionary.Add(InputAttributesSet.WalkLeft, new KeyboardInputControl(KeyCode.LeftArrow));
-        _inputDictionary.Add(InputAttributesSet.WalkRight, new KeyboardInputControl(KeyCode.RightArrow));
-        _inputDictionary.Add(InputAttributesSet.WalkUp, new KeyboardInputControl(KeyCode.UpArrow));
+        //filling dictionary without arguments
+        _commonDictionary.Add(typeof(InputArguments), new InputDictionary<InputArguments>
+        {
+            { InputAttributesSet.WalkDown, new KeyDownKeyboardInputControl(KeyCode.W) },
+            { InputAttributesSet.WalkLeft, new KeyDownKeyboardInputControl(KeyCode.LeftArrow) },
+            { InputAttributesSet.WalkRight, new KeyDownKeyboardInputControl(KeyCode.RightArrow) },
+            { InputAttributesSet.WalkUp, new KeyDownKeyboardInputControl(KeyCode.UpArrow) }
+        });
+
+        //filling dictionary with Duration argument
+        _commonDictionary.Add(typeof(PositionInputArguments), new InputDictionary<PositionInputArguments>
+        {
+            { InputAttributesSet.WalkFree, new KeyDownKeyboardInputControl(KeyCode.W) }
+        });
     }
 
-    public bool GetIsControl(InputAttribute attribute, InputArguments arguments)
+    public bool GetIsControl<T>(InputAttribute attribute, T arguments) where T : InputArguments
     {
         return _inputDictionary.GetIsControl(attribute, arguments);
     }

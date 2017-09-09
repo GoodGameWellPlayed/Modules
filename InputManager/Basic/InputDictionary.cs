@@ -1,27 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class InputDictionary
+public class InputDictionary<T> : Dictionary<InputAttribute, IInputControl<T>> where T : InputArguments
 {
-    protected static Dictionary<InputAttribute, InputControl> _dictionary;
-
-    public InputDictionary()
+    public InputDictionary():base(byte.MaxValue)
     {
-        _dictionary = new Dictionary<InputAttribute, InputControl>(10);
     }
 
-    public bool GetIsControl(InputAttribute attribute, InputArguments arguments = null)
+    public bool GetIsControl(InputAttribute attribute, T arguments = null)
     {
-        if (!_dictionary.ContainsKey(attribute))
+        if (!ContainsKey(attribute))
         {
             return false;
         }
-        return _dictionary[attribute].GetIsControl(arguments);
+        return this[attribute].GetIsControl(arguments);
     }
 
-    public bool HasControl(InputControl control)
+    public bool HasControl(IInputControl<T> control)
     {
-        foreach (InputControl c in _dictionary.Values)
+        foreach (IInputControl<T> c in Values)
         {
             if (c.Equals(control))
             {
@@ -29,17 +28,5 @@ public class InputDictionary
             }
         }
         return false;
-    }
-
-    public void Add(InputAttribute attribute, InputControl control)
-    {
-        if (_dictionary.ContainsKey(attribute))
-        {
-            Debug.LogError("InputAttribute " + attribute.Name + " is already in a dictionary");
-        }
-        else
-        {
-            _dictionary.Add(attribute, control);
-        }
     }
 }
