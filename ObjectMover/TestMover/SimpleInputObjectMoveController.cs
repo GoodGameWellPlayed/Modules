@@ -5,6 +5,11 @@ public class SimpleInputObjectMoveController : MonoBehaviorMoveController
 {
     private DirectionControlArguments _direction;
 
+    private InputAttribute Up { get { return InputAttributesSet.WalkUp; } }
+    private InputAttribute Down { get { return InputAttributesSet.WalkDown; } }
+    private InputAttribute Left { get { return InputAttributesSet.WalkLeft; } }
+    private InputAttribute Right { get { return InputAttributesSet.WalkRight; } }
+
     public override ControlArguments GetArguments()
     {
         if (_direction == null)
@@ -13,21 +18,21 @@ public class SimpleInputObjectMoveController : MonoBehaviorMoveController
         }
         Vector3 direction = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (InputManager.Instance.GetIsControl(Up))
+        {
+            direction.y = 1;
+        }
+        if (InputManager.Instance.GetIsControl(Down))
+        {
+            direction.y = -1;
+        }
+        if (InputManager.Instance.GetIsControl(Right))
         {
             direction.x = 1;
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (InputManager.Instance.GetIsControl(Left))
         {
             direction.x = -1;
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            direction.z = 1;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            direction.z = -1;
         }
 
         if (direction == Vector3.zero)

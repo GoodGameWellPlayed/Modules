@@ -4,26 +4,13 @@ using UnityEngine;
 /// <summary>
 /// It is highly recommended to use ExtendableArray as "A" type for your project
 /// </summary>
-public abstract class Spawner<T, P, A> : MonoBehaviour where T : PoolableObjectArguments 
-    where P : PoolableObject where A : IEnumerable<T>
+public abstract class Spawner<T, P> : MonoBehaviour where T : PoolableObjectArguments 
+    where P : PoolableObject
 {
-    [SerializeField] private SpawnBehavior<T, A> _spawnBehavior;
-
-    private string _pTypeName;
-    
-    protected A Arguments { get; set; }
-
-    protected abstract void CreateArguments();
+    protected abstract IArgumentsGenerator ArgumentsGenerator { get; }
 
     private void Start()
     {
-        if (_spawnBehavior == null)
-        {
-            _spawnBehavior = GetComponent<SpawnBehavior<T, A>>();
-        }
-        CreateArguments();
-        _pTypeName = "";//TODO get class name
-
         OnStart();
     }
 
@@ -33,12 +20,16 @@ public abstract class Spawner<T, P, A> : MonoBehaviour where T : PoolableObjectA
 
     void Update ()
     {
-        Arguments.GetEnumerator().Dispose();
-        _spawnBehavior.GetPoolableArguments(Arguments);
-
-        foreach (T arguments in Arguments)
+        foreach (PoolableObjectArguments arguments in ArgumentsGenerator.GetPoolableArguments())
         {
-            OnAfterSpawnObject(Spawn(arguments));
+            if (!(arguments is T))
+            {
+                Debug.LogError("Arguments should be of the type " + typeof(T));
+            }
+            else
+            {
+                OnAfterSpawnObject(Spawn(arguments as T));
+            }
         }
 
         OnUpdate();
@@ -55,12 +46,12 @@ public abstract class Spawner<T, P, A> : MonoBehaviour where T : PoolableObjectA
         IPoolGroup<PoolableObject> poolGroup = GetPoolGroup
             (arguments.PoolableObjectGroupNameIndex.PoolGroupName);
 
-        PoolableObject poolableObject = poolGroup.Pools
+        IPoolableObject poolableObject = poolGroup.Pools
             [arguments.PoolableObjectGroupNameIndex.PoolableObjectIndex].Spawn();
         if (!(poolableObject is P))
         {
             poolableObject.Despawn();
-            Debug.LogError("You should spawn " + _pTypeName + " here! Chose the other object to spawn!");
+            Debug.LogError("You should spawn " + typeof(P) + " here! Chose the other object to spawn!");
             return null;
         }
 

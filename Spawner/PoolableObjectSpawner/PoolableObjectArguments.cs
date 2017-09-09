@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public abstract class PoolableObjectArguments
+public class PoolableObjectArguments
 {
     public PoolGroupNameObjectIdPair PoolableObjectGroupNameIndex;
 }

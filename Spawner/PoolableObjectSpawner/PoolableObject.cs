@@ -12,14 +12,14 @@ public abstract class PoolableObject : MonoBehaviour, IPoolableObject
     }
 
     public void Destroy()
-	{
-		Destroy(gameObject);
-	}
+    {
+        Destroy(gameObject);
+    }
 
     public virtual void OnAfterSpawn()
     {
     }
-        
+
     public virtual void OnBeforeDespawn()
     {
     }

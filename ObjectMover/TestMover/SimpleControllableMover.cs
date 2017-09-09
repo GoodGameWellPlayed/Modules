@@ -7,13 +7,13 @@ public class SimpleControllableMover :
     MonoBehaviorControllableObjectMover<DirectionControlArguments>
 {
     [SerializeField] private float _speed;
-    private Rigidbody _rigidbody;
+    private Rigidbody2D _rigidbody;
 
     public override bool Move(DirectionControlArguments arguments)
     {
         if (_rigidbody == null)
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody2D>();
         }
 
         if (arguments == null || arguments.IsEmpty)
@@ -23,6 +23,8 @@ public class SimpleControllableMover :
         }
 
         _rigidbody.velocity = arguments.Direction * _speed;
+        //transform.LookAt(transform.position + _rigidbody.velocity, Vector3.);
+        //transform.localRotation = Quaternion.Euler(_rigidbody.velocity);
         return true;
     }
 }

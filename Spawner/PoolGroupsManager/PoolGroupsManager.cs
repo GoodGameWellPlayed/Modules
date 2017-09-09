@@ -8,7 +8,7 @@ public class PoolGroupsManager : Singleton<PoolGroupsManager>, IDisposable
     [SerializeField] private string _poolGroupName;
     [SerializeField] private PoolableObject[] _poolableObjectArray;
 
-    private void Start()
+    private void Awake()
     {
         _groupsDictionary = new PoolGroupDictionary();
 
@@ -46,6 +46,11 @@ public class PoolGroupsManager : Singleton<PoolGroupsManager>, IDisposable
     public IPoolGroup<PoolableObject> GetPoolGroup(string poolGroupName)
     {
         return GroupsDictionary[poolGroupName];
+    }
+
+    public PoolableObject GetObjectPrefab(string poolGroupName, int objectId)
+    {
+        return (GroupsDictionary[poolGroupName].Pools[objectId] as PrefabPool).Prefab;
     }
 
     public void AddPoolGroup(IPoolGroup<PoolableObject> poolGroup)
