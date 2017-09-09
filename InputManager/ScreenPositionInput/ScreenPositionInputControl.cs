@@ -1,17 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenPositionInputControl<T> : IInputControl<T> where T : InputArguments
+public abstract class ScreenPositionInputControl<T> : IInputControl<T> where T : InputArguments, IPositionInputArguments
 {
+    public bool GetIsControl(T arguments = null)
+    {
+        Vector3 position;
+        bool result = InheritedGetIsControl(out position, arguments);
+        arguments.Position = position;
+        return result;
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    protected abstract bool InheritedGetIsControl(out Vector3 position, T arguments = null);
 }

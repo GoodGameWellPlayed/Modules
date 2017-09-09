@@ -1,4 +1,4 @@
-﻿public interface IInputControl<in T> where T : InputArguments
+﻿public interface IInputControl<A> where A : InputArguments
 {
-    bool GetIsControl(T arguments = null);
+    bool GetIsControl(A arguments = null);
 }
