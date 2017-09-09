@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputDictionary<T> : Dictionary<InputAttribute, IInputControl<T>> where T : InputArguments
+public class InputDictionary<T> : Dictionary<InputAttribute, IInputControl<T>> where T : class, IInputArguments
 {
     public InputDictionary():base(byte.MaxValue)
     {

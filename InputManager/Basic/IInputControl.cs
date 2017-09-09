@@ -1,4 +1,5 @@
-﻿public interface IInputControl<A> where A : InputArguments
+﻿public interface IInputControl<A> where A : IInputArguments
 {
-    bool GetIsControl(A arguments = null);
+    //TODO для разных типов InputArguments
+    bool GetIsControl(A arguments);
 }

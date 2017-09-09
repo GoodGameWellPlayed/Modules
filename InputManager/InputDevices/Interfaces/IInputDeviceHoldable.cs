@@ -1,5 +1,5 @@
-﻿public interface IInputDeviceHoldable
+﻿public interface IInputDeviceHoldable<I> : IInputDevice
 {
-    bool IsHolding(object buttonIdentifier);
+    bool IsHolding(I buttonIdentifier);
 }
 

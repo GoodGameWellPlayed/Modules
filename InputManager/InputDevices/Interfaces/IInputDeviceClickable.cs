@@ -1,6 +1,6 @@
-﻿public interface IInputDeviceClickable
+﻿public interface IInputDeviceClickable<I> : IInputDevice
 {
-    bool IsPressed(object buttonIdentifier);
-    bool IsReleased(object buttonIdentifier);
+    bool IsPressed(I buttonIdentifier);
+    bool IsReleased(I buttonIdentifier);
 }
 

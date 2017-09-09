@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseInputDevice : InputDevice, IInputDeviceClickable,
-    IInputDevicePositioned, IInputDeviceHoldable
+public class MouseInputDevice : IInputDeviceClickable<MouseButtons>,
+    IInputDevicePositioned, IInputDeviceHoldable<MouseButtons>
 {
     private Vector3 _lastMousePosition = Vector3.zero;
 
@@ -19,17 +19,17 @@ public class MouseInputDevice : InputDevice, IInputDeviceClickable,
         return false;
     }
 
-    public bool IsHolding(object buttonIdentifier)
+    public bool IsHolding(MouseButtons buttonIdentifier)
     {
         return Input.GetMouseButton((int)(buttonIdentifier));
     }
 
-    public bool IsPressed(object buttonIdentifier)
+    public bool IsPressed(MouseButtons buttonIdentifier)
     {
         return Input.GetMouseButtonDown((int)(buttonIdentifier));
     }
 
-    public bool IsReleased(object buttonIdentifier)
+    public bool IsReleased(MouseButtons buttonIdentifier)
     {
         return Input.GetMouseButtonUp((int)(buttonIdentifier));
     }

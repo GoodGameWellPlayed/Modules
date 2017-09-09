@@ -18,19 +18,19 @@ public class SimpleInputObjectMoveController : MonoBehaviorMoveController
         }
         Vector3 direction = Vector3.zero;
 
-        if (InputManager.Instance.GetIsControl(Up))
+        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Up))
         {
             direction.y = 1;
         }
-        if (InputManager.Instance.GetIsControl(Down))
+        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Down))
         {
             direction.y = -1;
         }
-        if (InputManager.Instance.GetIsControl(Right))
+        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Right))
         {
             direction.x = 1;
         }
-        if (InputManager.Instance.GetIsControl(Left))
+        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Left))
         {
             direction.x = -1;
         }

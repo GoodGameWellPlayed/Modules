@@ -3,20 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyboardInputDevice : InputDevice, IInputDeviceClickable, IInputDeviceHoldable
+public class KeyboardInputDevice : IInputDeviceClickable<KeyCode>, IInputDeviceHoldable<KeyCode>
 {
-    public bool IsHolding(object buttonIdentifier)
+    public bool IsHolding(KeyCode buttonIdentifier)
     {
-        return Input.GetKey((KeyCode)buttonIdentifier);
+        return Input.GetKey(buttonIdentifier);
     }
 
-    public bool IsPressed(object buttonIdentifier)
+    public bool IsPressed(KeyCode buttonIdentifier)
     {
-        return Input.GetKeyDown((KeyCode)buttonIdentifier);
+        return Input.GetKeyDown(buttonIdentifier);
     }
 
-    public bool IsReleased(object buttonIdentifier)
+    public bool IsReleased(KeyCode buttonIdentifier)
     {
-        return Input.GetKeyUp((KeyCode)buttonIdentifier);
+        return Input.GetKeyUp(buttonIdentifier);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class DeviceInputControl<A, D> : IInputControl<A>
-    where A : InputArguments where D : InputDevice
+    where A : class, IInputArguments where D : IInputDevice
 {
     protected D Device { get; private set; }
 
@@ -13,5 +13,5 @@ public abstract class DeviceInputControl<A, D> : IInputControl<A>
         Device = device;
     }
 
-    public abstract bool GetIsControl(A arguments = null);
+    public abstract bool GetIsControl(A arguments);
 }

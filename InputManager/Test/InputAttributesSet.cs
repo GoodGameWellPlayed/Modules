@@ -5,5 +5,6 @@
     public static InputAttribute WalkLeft = new InputAttribute("Walk.Left");
     public static InputAttribute WalkRight = new InputAttribute("Walk.Right");
 
-    public static InputAttribute WalkFree = new InputAttribute("Walk.Free");
+    public static InputAttribute CursorMove = new InputAttribute("Cursor.Move");
+    public static InputAttribute CursorClick = new InputAttribute("Cursor.Click");
 }

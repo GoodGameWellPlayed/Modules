@@ -1,35 +1,12 @@
 ﻿using UnityEngine;
 
-public interface IInputDevicePositioned
+public interface IInputDevicePositioned : IInputDevice
 {
     bool IsCursorMoved(out Vector3 cursorPosition);
 }
 
-public interface IInputDevicePositioned<I>
+public interface IInputDevicePositioned<I> : IInputDevice
 {
     bool IsCursorMoved(I cursorIdentifier, out Vector3 cursorPosition);
-}
-
-public class Iii<A>
-{
-
-}
-
-public class Iiii : Iii<object>
-{
-
-}
-
-public class Ooo
-{
-    public void i<L, A>(A obj) where L : Iii<A>
-    {
-
-    }
-
-    void start()
-    {
-        Iiii ii = 
-    }
 }
 
