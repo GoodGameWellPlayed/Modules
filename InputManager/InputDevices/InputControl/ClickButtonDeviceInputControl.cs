@@ -1,4 +1,4 @@
-﻿public class ClickButtonDeviceInputControl<D, I> : DeviceInputControl<EmptyInputArguments, D>
+﻿public class ClickButtonDeviceInputControl<D, I> : DeviceInputControl<D>
     where D : IInputDeviceClickable<I>
 {
     private I _buttonIdentifier;
@@ -11,7 +11,7 @@
         _controlType = controlType;
     }
 
-    public override bool GetIsControl(EmptyInputArguments arguments = null)
+    public override bool GetIsControl<A>(A arguments)
     {
         if (_controlType == ControlType.Press)
         {

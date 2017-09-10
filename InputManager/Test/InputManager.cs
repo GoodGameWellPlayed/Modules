@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
-    private Dictionary<Type, object> _commonDictionary;
+    private InputDictionary _inputDictionary;
 
     private static KeyboardInputDevice Keyboard = new KeyboardInputDevice();
     private static MouseInputDevice Mouse = new MouseInputDevice();
 
-    private static IInputControl<T> CreateInputControl<T>(InputDeviceType inputDeviceType, object buttonIdentifier, 
-        InputType inputType) where T : class, IInputArguments
+    private static IInputControl CreateInputControl(InputDeviceType inputDeviceType, object buttonIdentifier, 
+        InputType inputType)
     {
         switch (inputDeviceType)
         {
@@ -22,17 +22,17 @@ public class InputManager : Singleton<InputManager>
                     case InputType.Press:
                     {
                         return new ClickButtonDeviceInputControl<KeyboardInputDevice, KeyCode>(Keyboard,
-                            (KeyCode)(buttonIdentifier), ControlType.Press) as IInputControl<T>;
+                            (KeyCode)(buttonIdentifier), ControlType.Press) as IInputControl;
                     }
                     case InputType.Release:
                     {
                         return new ClickButtonDeviceInputControl<KeyboardInputDevice, KeyCode>(Keyboard,
-                            (KeyCode)(buttonIdentifier), ControlType.Release) as IInputControl<T>;
+                            (KeyCode)(buttonIdentifier), ControlType.Release) as IInputControl;
                     }
                     case InputType.Hold:
                     {
                         return new HoldButtonDeviceInputControl<KeyboardInputDevice, KeyCode>(Keyboard,
-                            (KeyCode)(buttonIdentifier)) as IInputControl<T>;
+                            (KeyCode)(buttonIdentifier)) as IInputControl;
                     }
                 }
                 break;
@@ -44,21 +44,21 @@ public class InputManager : Singleton<InputManager>
                     case InputType.Press:
                     {
                         return new ClickButtonDeviceInputControl<MouseInputDevice, MouseButtons>(Mouse,
-                            (MouseButtons)(buttonIdentifier), ControlType.Press) as IInputControl<T>;
+                            (MouseButtons)(buttonIdentifier), ControlType.Press) as IInputControl;
                     }
                     case InputType.Release:
                     {
                         return new ClickButtonDeviceInputControl<MouseInputDevice, MouseButtons>(Mouse,
-                            (MouseButtons)(buttonIdentifier), ControlType.Release) as IInputControl<T>;
+                            (MouseButtons)(buttonIdentifier), ControlType.Release) as IInputControl;
                     }
                     case InputType.Hold:
                     {
                         return new HoldButtonDeviceInputControl<MouseInputDevice, MouseButtons>(Mouse,
-                            (MouseButtons)(buttonIdentifier)) as IInputControl<T>;
+                            (MouseButtons)(buttonIdentifier)) as IInputControl;
                     }
                     case InputType.Move:
                     {
-                        return new MoveCursorDeviceInputControl<MouseInputDevice>(Mouse) as IInputControl<T>;
+                        return new MoveCursorDeviceInputControl<MouseInputDevice>(Mouse) as IInputControl;
                     }
                 }
                 break;
@@ -69,34 +69,27 @@ public class InputManager : Singleton<InputManager>
 
     private void Start()
     {
-        _commonDictionary = new Dictionary<Type, object>();
-
-        //filling dictionary without arguments
-        _commonDictionary.Add(typeof(EmptyInputArguments), new InputDictionary<EmptyInputArguments>
+        _inputDictionary = new InputDictionary()
         {
             { InputAttributesSet.WalkDown,
-                CreateInputControl<EmptyInputArguments>(InputDeviceType.Keyboard, KeyCode.S, InputType.Hold) },
+                CreateInputControl(InputDeviceType.Keyboard, KeyCode.S, InputType.Hold) },
             { InputAttributesSet.WalkLeft,
-                CreateInputControl<EmptyInputArguments>(InputDeviceType.Keyboard, KeyCode.A, InputType.Hold) },
+                CreateInputControl(InputDeviceType.Keyboard, KeyCode.A, InputType.Hold) },
             { InputAttributesSet.WalkRight,
-                CreateInputControl<EmptyInputArguments>(InputDeviceType.Keyboard, KeyCode.D, InputType.Hold) },
+                CreateInputControl(InputDeviceType.Keyboard, KeyCode.D, InputType.Hold) },
             { InputAttributesSet.WalkUp,
-                CreateInputControl<EmptyInputArguments>(InputDeviceType.Keyboard, KeyCode.W, InputType.Hold) },
-        });
+                CreateInputControl(InputDeviceType.Keyboard, KeyCode.W, InputType.Hold) },
 
-        //filling dictionary with Duration argument
-        _commonDictionary.Add(typeof(PositionInputArguments), new InputDictionary<PositionInputArguments>
-        {
             { InputAttributesSet.CursorMove,
-                CreateInputControl<PositionInputArguments>(InputDeviceType.Mouse, MouseButtons.Left, InputType.Press) },
+                CreateInputControl(InputDeviceType.Mouse, MouseButtons.Left, InputType.Press) },
             { InputAttributesSet.CursorClick,
-                CreateInputControl<PositionInputArguments>(InputDeviceType.Mouse, MouseButtons.Left, InputType.Move) }
-        });
+                CreateInputControl(InputDeviceType.Mouse, MouseButtons.Left, InputType.Move) }
+        };
     }
 
-    public bool GetIsControl<T>(InputAttribute attribute, T arguments = null) where T : class, IInputArguments
+    public bool GetIsControl<T>(InputAttribute attribute, T arguments) where T : IInputArguments
     {
-        return (_commonDictionary[typeof(T)] as InputDictionary<T>).GetIsControl(attribute, arguments);
+        return _inputDictionary.GetIsControl(attribute, arguments);
     }
 }
 

@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputDictionary<T> : Dictionary<InputAttribute, IInputControl<T>> where T : class, IInputArguments
+public class InputDictionary : Dictionary<InputAttribute, IInputControl>
 {
     public InputDictionary():base(byte.MaxValue)
     {
     }
 
-    public bool GetIsControl(InputAttribute attribute, T arguments = null)
+    public bool GetIsControl<A>(InputAttribute attribute, A arguments) where A : IInputArguments
     {
         if (!ContainsKey(attribute))
         {
@@ -18,9 +18,9 @@ public class InputDictionary<T> : Dictionary<InputAttribute, IInputControl<T>> w
         return this[attribute].GetIsControl(arguments);
     }
 
-    public bool HasControl(IInputControl<T> control)
+    public bool HasControl(IInputControl control)
     {
-        foreach (IInputControl<T> c in Values)
+        foreach (IInputControl c in Values)
         {
             if (c.Equals(control))
             {
