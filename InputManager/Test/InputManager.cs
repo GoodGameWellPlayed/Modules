@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : Singleton<InputManager>
+public class InputManager : Singleton<InputManager>, IInputManager
 {
     private InputDictionary _inputDictionary;
+
+    private EmptyInputArguments _emptyInputArguments = new EmptyInputArguments();
 
     private static KeyboardInputDevice Keyboard = new KeyboardInputDevice();
     private static MouseInputDevice Mouse = new MouseInputDevice();
@@ -87,9 +89,14 @@ public class InputManager : Singleton<InputManager>
         };
     }
 
-    public bool GetIsControl<T>(InputAttribute attribute, T arguments) where T : IInputArguments
+    public bool GetIsControl<A>(InputAttribute attribute, A arguments) where A : class, IInputArguments
     {
         return _inputDictionary.GetIsControl(attribute, arguments);
+    }
+
+    public bool GetIsControl(InputAttribute attribute)
+    {
+        return _inputDictionary.GetIsControl(attribute, _emptyInputArguments);
     }
 }
 

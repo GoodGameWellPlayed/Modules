@@ -9,7 +9,7 @@ public class InputDictionary : Dictionary<InputAttribute, IInputControl>
     {
     }
 
-    public bool GetIsControl<A>(InputAttribute attribute, A arguments) where A : IInputArguments
+    public bool GetIsControl<A>(InputAttribute attribute, A arguments) where A : class, IInputArguments
     {
         if (!ContainsKey(attribute))
         {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class DeviceInputControl<D> : IInputControl where D : IInputDevice
+﻿public abstract class DeviceInputControl<D> : IInputControl where D : IInputDevice
 {
     protected D Device { get; private set; }
 
@@ -12,5 +7,5 @@ public abstract class DeviceInputControl<D> : IInputControl where D : IInputDevi
         Device = device;
     }
 
-    public abstract bool GetIsControl<A>(A arguments) where A : IInputArguments;
+    public abstract bool GetIsControl<A>(A arguments) where A : class, IInputArguments;
 }

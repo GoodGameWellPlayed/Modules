@@ -10,8 +10,6 @@ public class SimpleInputObjectMoveController : MonoBehaviorMoveController
     private InputAttribute Left { get { return InputAttributesSet.WalkLeft; } }
     private InputAttribute Right { get { return InputAttributesSet.WalkRight; } }
 
-    private EmptyInputArguments arguments = new EmptyInputArguments();
-
     public override ControlArguments GetArguments()
     {
         if (_direction == null)
@@ -20,21 +18,19 @@ public class SimpleInputObjectMoveController : MonoBehaviorMoveController
         }
         Vector3 direction = Vector3.zero;
 
-        EmptyInputArguments arguments = new EmptyInputArguments();
-
-        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Up, arguments))
+        if (InputManager.Instance.GetIsControl(Up))
         {
             direction.y = 1;
         }
-        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Down, arguments))
+        if (InputManager.Instance.GetIsControl(Down))
         {
             direction.y = -1;
         }
-        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Right, arguments))
+        if (InputManager.Instance.GetIsControl(Right))
         {
             direction.x = 1;
         }
-        if (InputManager.Instance.GetIsControl<EmptyInputArguments>(Left, arguments))
+        if (InputManager.Instance.GetIsControl(Left))
         {
             direction.x = -1;
         }

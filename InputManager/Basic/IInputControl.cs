@@ -1,4 +1,4 @@
 ﻿public interface IInputControl
 {
-    bool GetIsControl<A>(A arguments) where A : IInputArguments;
+    bool GetIsControl<A>(A arguments) where A : class, IInputArguments;
 }
