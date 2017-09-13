@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class DirectionControlArguments : ControlArguments
+public class DirectionControlArguments : IDirectionControlArguments
 {
     private Vector3 _direction;
 

@@ -1,6 +1,12 @@
 ﻿using System.Collections.Generic;
 
-public interface IArgumentsGenerator
+public class PoolSpawnInfo<A, I> where A : IPoolArguments
 {
-    IEnumerable<PoolableObjectArguments> GetPoolableArguments();
+    public A Arguments { get; set; }
+    public I PoolIdentity { get; set; }
+}
+
+public interface IArgumentsGenerator<A, I> where A : IPoolArguments
+{
+    IEnumerable<PoolSpawnInfo<A, I>> GetPoolableArguments();
 }

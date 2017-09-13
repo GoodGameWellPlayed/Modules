@@ -8,3 +8,4 @@
     public static InputAttribute CursorMove = new InputAttribute("Cursor.Move");
     public static InputAttribute CursorClick = new InputAttribute("Cursor.Click");
 }
+

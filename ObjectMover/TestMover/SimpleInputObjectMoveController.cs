@@ -10,7 +10,7 @@ public class SimpleInputObjectMoveController : MonoBehaviorMoveController
     private InputAttribute Left { get { return InputAttributesSet.WalkLeft; } }
     private InputAttribute Right { get { return InputAttributesSet.WalkRight; } }
 
-    public override ControlArguments GetArguments()
+    public override IControlArguments GetArguments()
     {
         if (_direction == null)
         {

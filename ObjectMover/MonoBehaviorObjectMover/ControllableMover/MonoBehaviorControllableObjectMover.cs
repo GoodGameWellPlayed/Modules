@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class MonoBehaviorControllableObjectMover<A> : MonoBehaviorObjectMover, 
-    IControllableObjectMover<A> where A : ControlArguments
+    IControllableObjectMover<A> where A : IControlArguments
 {
     [SerializeField] MonoBehaviorMoveController _controller;
 
@@ -12,14 +12,14 @@ public abstract class MonoBehaviorControllableObjectMover<A> : MonoBehaviorObjec
 
     public override void Move()
     {
-        ControlArguments arguments = _controller.GetArguments();
+        IControlArguments arguments = _controller.GetArguments();
 
         if (!(arguments is A) && (arguments != null))
         {
             Debug.LogError("Controller should return the other type of arguments");
         }
 
-        if (!Move(arguments as A))
+        if (!Move((A)arguments))
         {
             Stay();
         }

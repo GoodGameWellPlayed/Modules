@@ -14,6 +14,6 @@
                 (arguments as IPositionInputArguments).Position = Device.CursorPosition;
             }
         }
-        return Device.IsCursorMoved();
+        return Device.IsCursorMoving();
     }
 }

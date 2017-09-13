@@ -15,7 +15,7 @@ public class PoolGroupsManager : Singleton<PoolGroupsManager>, IDisposable
         PoolableObjectsGroup newGroup = new PoolableObjectsGroup(_poolGroupName);
         for (int i = 0; i < _poolableObjectArray.Length; i++)
         {
-            newGroup.Pools.Add(new PrefabPool(_poolableObjectArray[i]));
+            newGroup.Pools.Add(new PrefabPool<PoolableObject>(_poolableObjectArray[i]));
         }
 
         _groupsDictionary.Add(_poolGroupName, newGroup);
@@ -50,7 +50,7 @@ public class PoolGroupsManager : Singleton<PoolGroupsManager>, IDisposable
 
     public PoolableObject GetObjectPrefab(string poolGroupName, int objectId)
     {
-        return (GroupsDictionary[poolGroupName].Pools[objectId] as PrefabPool).Prefab;
+        return (GroupsDictionary[poolGroupName].Pools[objectId] as PrefabPool<PoolableObject>).Prefab;
     }
 
     public void AddPoolGroup(IPoolGroup<PoolableObject> poolGroup)

@@ -1,13 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-[System.Serializable]
-public class PoolableObjectArguments
+public interface IGroupIndexPoolArguments : IPoolArguments
 {
-    public PoolGroupNameObjectIdPair PoolableObjectGroupNameIndex;
+    PoolGroupPair PoolGroup { get; set; }
 }
 
-[System.Serializable]
-public struct PoolGroupNameObjectIdPair
+[Serializable]
+public struct PoolGroupPair
 {
     [SerializeField] private string _poolGroupName;
     [SerializeField] private int _poolGroupIndex;
@@ -24,4 +24,6 @@ public struct PoolGroupNameObjectIdPair
         set { _poolGroupIndex = value; }
     }
 }
+
+
 

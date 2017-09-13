@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class ObjectDependantControllableObjectMover<A, T> : ObjectDependantObjectMover<T>, 
-    IControllableObjectMover<A> where A : ControlArguments where T : MonoBehaviour
+    IControllableObjectMover<A> where A : IControlArguments where T : MonoBehaviour
 {
     protected abstract IMoveController Controller { get; }
 
@@ -12,14 +9,14 @@ public abstract class ObjectDependantControllableObjectMover<A, T> : ObjectDepen
 
     public override void Move()
     {
-        ControlArguments arguments = Controller.GetArguments();
+        IControlArguments arguments = Controller.GetArguments();
 
         if (!(arguments is A) && (arguments != null))
         {
             Debug.LogError("Controller should return the other type of arguments");
         }
 
-        if (!Move(arguments as A))
+        if (!Move((A)arguments))
         {
             Stay();
         }

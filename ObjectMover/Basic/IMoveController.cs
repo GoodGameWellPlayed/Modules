@@ -1,5 +1,5 @@
 ﻿public interface IMoveController
 {
-    ControlArguments GetArguments();
+    IControlArguments GetArguments();
 }
 

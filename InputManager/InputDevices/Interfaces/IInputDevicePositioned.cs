@@ -2,7 +2,7 @@
 
 public interface IInputDevicePositioned : IInputDevice
 {
-    bool IsCursorMoved();
+    bool IsCursorMoving();
 
     Vector3 CursorPosition { get; }
 }

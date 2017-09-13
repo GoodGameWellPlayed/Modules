@@ -7,7 +7,7 @@ public class MouseInputDevice : IInputDeviceClickable<MouseButtons>,
 
     public Vector3 CursorPosition { get { return Input.mousePosition; } }
 
-    public bool IsCursorMoved()
+    public bool IsCursorMoving()
     {
         Vector3 cursorPosition = CursorPosition;
         if (_lastMousePosition != cursorPosition)

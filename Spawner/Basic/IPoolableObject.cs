@@ -1,6 +1,3 @@
-using UnityEngine;
-using System.Collections;
-
 public interface IPoolableObject
 {
     void Destroy();
@@ -8,4 +5,5 @@ public interface IPoolableObject
     void OnBeforeDespawn();
     void OnSpawnerUpdate();
     void Despawn();
+    void SetActive(bool isActive);
 }
