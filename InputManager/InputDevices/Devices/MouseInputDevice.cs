@@ -1,11 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class MouseInputDevice : IInputDeviceClickable<MouseButtons>,
     IInputDevicePositioned, IInputDeviceHoldable<MouseButtons>
 {
     private Vector3 _lastMousePosition = Vector3.zero;
 
-    public Vector3 CursorPosition { get { return Input.mousePosition; } }
+    private Vector3 CursorPosition
+    {
+        get
+        {
+            return Input.mousePosition;
+        }
+    }
+
+    public void GetCursorPosition(IPositionInputArguments arguments)
+    {
+        arguments.Position = CursorPosition;
+    }
 
     public bool IsCursorMoving()
     {
