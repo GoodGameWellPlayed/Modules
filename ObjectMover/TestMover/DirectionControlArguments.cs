@@ -21,17 +21,13 @@ public class DirectionControlArguments : IDirectionControlArguments
     {
         get
         {
-            return (Mathf.Abs(_direction.x) == 1 || _direction.x == 0) &&
-                   (Mathf.Abs(_direction.y) == 1 || _direction.y == 0) &&
-                   (Mathf.Abs(_direction.z) == 1 || _direction.z == 0);
+            return _direction.sqrMagnitude == 1;
         }
     }
 
     private void Normalize()
     {
-        _direction.x = _direction.x == 0 ? 0 : Mathf.Abs(_direction.x) / _direction.x;
-        _direction.y = _direction.y == 0 ? 0 : Mathf.Abs(_direction.y) / _direction.y;
-        _direction.z = _direction.z == 0 ? 0 : Mathf.Abs(_direction.z) / _direction.z;
+        _direction.Normalize();
     }
 
     public bool IsEmpty
