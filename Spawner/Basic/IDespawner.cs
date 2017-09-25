@@ -1,4 +1,4 @@
-﻿public interface IDespawner 
+﻿public interface IDespawner
 {
-    void Despawn(ISpawnableObject spawnableObject);
+    void Despawn<T>(T spawnableObject);
 }

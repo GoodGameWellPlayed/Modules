@@ -1,12 +1,18 @@
 ﻿using System;
 using UnityEngine;
 
-public class GameObjectPrefabPoolSpawner<T> : PrefabPoolSpawner<T> where T : MonoBehaviour, ISpawnableObject
+public class GameObjectPrefabPoolSpawner<T> : PrefabPoolSpawner<T>, ISpawner<T>, IDespawner
+    where T : MonoBehaviour, ISpawnableObject
 {
     public GameObjectPrefabPoolSpawner(T spawnableObject, bool isExtendable = true) : 
         base(spawnableObject, isExtendable)
     {
 
+    }
+
+    public void Despawn(ISpawnableObject spawnableObject)
+    {
+        Despawn(spawnableObject as T);
     }
 
     protected override void DestroySpawnableObject(T spawnableObject)

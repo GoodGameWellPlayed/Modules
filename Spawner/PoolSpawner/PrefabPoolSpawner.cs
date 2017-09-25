@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PrefabPoolSpawner<T> : ISpawner<T>, IDespawner where T : ISpawnableObject
+public abstract class PrefabPoolSpawner<T>
 {
     public T Prefab { get; private set; }
     public int PoolSize { get; set; }
@@ -50,18 +50,16 @@ public abstract class PrefabPoolSpawner<T> : ISpawner<T>, IDespawner where T : I
 
         T spawnableObjectDequeue = _ready.Dequeue();
         SetObjectActive(spawnableObjectDequeue, true);
-        spawnableObjectDequeue.OnAfterSpawn();
         _pooled.Add(spawnableObjectDequeue);
         return spawnableObjectDequeue;
     }
 
-    public virtual void Despawn(ISpawnableObject spawnableObject)
+    protected void Despawn(T spawnableObject)
     {
-        _ready.Enqueue((T)spawnableObject);
-        _pooled.Remove((T)spawnableObject);
+        _ready.Enqueue(spawnableObject);
+        _pooled.Remove(spawnableObject);
 
-        spawnableObject.OnBeforeDespawn();
-        SetObjectActive((T)spawnableObject, false);
+        SetObjectActive(spawnableObject, false);
     }
 
     private void InstantiateObject(bool isActive)
@@ -69,7 +67,6 @@ public abstract class PrefabPoolSpawner<T> : ISpawner<T>, IDespawner where T : I
         T spawnableObjectEnqueue = InstantiateObject();
         _ready.Enqueue(spawnableObjectEnqueue);
         SetObjectActive(spawnableObjectEnqueue, false);
-        spawnableObjectEnqueue.Despawner = this;
     }
 
     public void Dispose()

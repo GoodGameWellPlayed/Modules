@@ -1,6 +1,6 @@
 ﻿using System;
 
-public interface ISpawner<T> : IDisposable where T : ISpawnableObject
+public interface ISpawner<T> : IDisposable
 {
     T Spawn();
 }
