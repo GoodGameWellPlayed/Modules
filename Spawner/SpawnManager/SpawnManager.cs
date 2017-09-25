@@ -9,7 +9,6 @@ public abstract class SpawnManager<B>
         _dictionary = new Dictionary<ISpawnableObject, object>();
     }
 
-    //TODO despawner and spawner in different realisations - spawner - dictionary, Despawner - link
     public virtual T SpawnObject<T>(T prefab) where T : B, ISpawnableObject
     {
         ISpawner<T> spawner = GetSpawner(prefab);
@@ -38,5 +37,5 @@ public abstract class SpawnManager<B>
     }
 
     protected abstract ISpawner<T> CreateSpawner<T>(T prefab) where T : B, ISpawnableObject;
-
 }
+

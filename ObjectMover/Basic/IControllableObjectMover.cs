@@ -1,4 +1,5 @@
-﻿public interface IControllableObjectMover<A> where A : IControlArguments
+﻿public interface IControllableObjectMover<A> : IObjectMover
+    where A : IControlArguments
 {
     bool Move(A arguments);
 }

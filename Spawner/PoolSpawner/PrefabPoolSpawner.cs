@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class PrefabPoolSpawner<T> : ISpawner<T>, IDespawner where T : ISpawnableObject
 {
