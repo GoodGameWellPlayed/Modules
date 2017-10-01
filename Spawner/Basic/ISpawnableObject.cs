@@ -1,5 +1,7 @@
-﻿public interface ISpawnableObject
+﻿using System;
+
+public interface ISpawnableObject
 {
     void OnAfterSpawn();
-    void OnBeforeDespawn();
+    void OnBeforeDespawn(Action<bool> despawnAction);
 }

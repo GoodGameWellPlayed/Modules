@@ -1,40 +1,40 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public abstract class PrefabPoolSpawner<T>
+public class PrefabPool<T> : IDisposable, IPool<T>
 {
     public T Prefab { get; private set; }
-    public int PoolSize { get; set; }
+    public int PoolSize { get; private set; }
     public bool IsExtendable { get; set; }
 
-    public bool IsInited { get; private set; }
+    private Queue<T> _ready;
+    private List<T> _pooled;
 
-    protected Queue<T> _ready;
-    protected List<T> _pooled;
+    public IObjectInstantiator<T> ObjectInstantiator { private get; set; }
 
-    public PrefabPoolSpawner(T spawnableObject, bool isExtendable = true)
+    public PrefabPool(T prefab, bool isExtendable = true, int poolSize = 10)
     {
         _ready = new Queue<T>();
         _pooled = new List<T>();
 
-        Prefab = spawnableObject;
+        Prefab = prefab;
         IsExtendable = isExtendable;
+        PoolSize = poolSize;
+
+        ObjectInstantiator = ObjectInstantiatorFactory.GetObjectInstantiator(prefab);
 
         Init();
     }
 
-    public void Init()
+    private void Init()
     {
         for (int i = 0; i < PoolSize; i++)
         {
             InstantiateObject(false);
         }
-
-        IsInited = true;
     }
 
-    public virtual T Spawn()
+    public T GetFromPool()
     {
         if (_ready.Count==0)
         {
@@ -54,17 +54,17 @@ public abstract class PrefabPoolSpawner<T>
         return spawnableObjectDequeue;
     }
 
-    protected void Despawn(T spawnableObject)
+    public void ReturnToPool(T poolableObject)
     {
-        _ready.Enqueue(spawnableObject);
-        _pooled.Remove(spawnableObject);
+        _ready.Enqueue(poolableObject);
+        _pooled.Remove(poolableObject);
 
-        SetObjectActive(spawnableObject, false);
+        SetObjectActive(poolableObject, false);
     }
 
     private void InstantiateObject(bool isActive)
     {
-        T spawnableObjectEnqueue = InstantiateObject();
+        T spawnableObjectEnqueue = ObjectInstantiator.InstantiateObject(Prefab); 
         _ready.Enqueue(spawnableObjectEnqueue);
         SetObjectActive(spawnableObjectEnqueue, false);
     }
@@ -81,14 +81,16 @@ public abstract class PrefabPoolSpawner<T>
         }
         _ready.Clear();
         _pooled.Clear();
-        IsInited = false;
     }
 
-    protected abstract T InstantiateObject();
+    private void SetObjectActive(T poolableObject, bool isActive)
+    {
+        ObjectInstantiator.SetObjectActive(poolableObject, isActive);
+    }
 
-    protected abstract void SetObjectActive(T spawnableObject, bool isActive);
-
-    protected abstract void DestroySpawnableObject(T spawnableObject);
-
+    private void DestroySpawnableObject(T spawnableObject)
+    {
+        ObjectInstantiator.DestroySpawnableObject(spawnableObject);
+    }
 }
 

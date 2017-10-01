@@ -1,6 +1,5 @@
-﻿using System;
-
-public interface ISpawner<T> : IDisposable
+﻿public interface ISpawner
 {
-    T Spawn();
+    T Spawn<T>(T prefab);
 }
+
