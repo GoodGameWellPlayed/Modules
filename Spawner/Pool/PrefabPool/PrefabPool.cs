@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class PrefabPool<T> : IDisposable, IPool<T>
 {
     public T Prefab { get; private set; }
-    public int PoolSize { get; private set; }
     public bool IsExtendable { get; set; }
 
     private Queue<T> _ready;
@@ -19,16 +18,10 @@ public class PrefabPool<T> : IDisposable, IPool<T>
 
         Prefab = prefab;
         IsExtendable = isExtendable;
-        PoolSize = poolSize;
 
         ObjectInstantiator = ObjectInstantiatorFactory.GetObjectInstantiator(prefab);
 
-        Init();
-    }
-
-    private void Init()
-    {
-        for (int i = 0; i < PoolSize; i++)
+        for (int i = 0; i < poolSize; i++)
         {
             InstantiateObject(false);
         }
@@ -40,7 +33,7 @@ public class PrefabPool<T> : IDisposable, IPool<T>
         {
             if (IsExtendable)
             {
-                InstantiateObject(false);
+                InstantiateObject(true);
             }
             else
             {

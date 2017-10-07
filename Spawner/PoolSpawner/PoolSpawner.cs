@@ -7,8 +7,8 @@ public class PoolSpawner : ISpawner, IDespawner, IDisposable
 
     public PoolSpawner(IObjectPoolLibrary objectPoolLibrary = null, IPoolCreator poolCreator = null)
     {
-        _objectPoolLibrary = objectPoolLibrary == null ? new DictionaryPoolLibrary() : objectPoolLibrary;
-        _poolCreator = poolCreator == null ? new DefaultPoolCreator() : poolCreator;
+        _objectPoolLibrary = objectPoolLibrary ?? new DictionaryPoolLibrary();
+        _poolCreator = poolCreator ?? new DefaultPoolCreator();
     }
 
     public void Despawn<T>(T spawnableObject)

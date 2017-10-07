@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class Singleton<T> : MonoBehaviour where T : Component
 {
@@ -16,7 +14,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
 
                 if (_instance == null)
                 {
-                    Debug.LogError("Instance of " + _instance.GetType().Name + " is not present on a scene");
+                    Debug.LogError("Instance of " + typeof(T) + " is not present on a scene");
                 }
             }
 
