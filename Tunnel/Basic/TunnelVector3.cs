@@ -3,6 +3,8 @@
 [System.Serializable]
 public struct TunnelVector3
 {
+    public static TunnelVector3 Zero = new TunnelVector3(0, new Angle(), 0);
+
     [SerializeField] private float _depth;
     [SerializeField] private Angle _angleDegrees;
     [SerializeField] private float _height;
