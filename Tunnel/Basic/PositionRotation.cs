@@ -33,8 +33,13 @@ public struct PositionRotation
         return new PositionRotation()
         {
             Position = rotation * position.Position,
-            Rotation = position.Rotation * rotation
+            Rotation = rotation * position.Rotation
         };
+    }
+
+    public override string ToString()
+    {
+        return "Position : " + Position + "; Rotation : " + Rotation.eulerAngles;
     }
 }
 

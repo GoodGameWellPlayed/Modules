@@ -18,7 +18,7 @@ public class SimpleCut : ITunnelDetailCut
     {
         return new PositionRotation()
         {
-            Position = Quaternion.Euler(vector.AngleDegrees.Value, 0, 0) * (Vector3.up * _radius),
+            Position = Quaternion.Euler(vector.AngleDegrees.Value, 0, 0) * (Vector3.down * (_radius - vector.Height)),
             Rotation = Quaternion.Euler(vector.AngleDegrees.Value, 0, 0)
         };
     }

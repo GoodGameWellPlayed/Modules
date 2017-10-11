@@ -35,6 +35,16 @@ public sealed class TunnelTransform : MonoBehaviour
             Debug.LogError("Tunnel is not assinged!");
             return;
         }
+
+        if (position.Depth < 0)
+        {
+            position.Depth = 0;
+        }
+        if (position.Depth > _tunnel.Length)
+        {
+            position.Depth = _tunnel.Length;
+        }
+
         _position = position;
         _tunnel.PutInTunnel(transform, Position);
     }

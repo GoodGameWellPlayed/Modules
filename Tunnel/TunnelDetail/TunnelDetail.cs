@@ -21,6 +21,7 @@ public class TunnelDetail : ITunnelDetail
 
     public PositionRotation GetGlobalPositionRotation(TunnelVector3 localPosition)
     {
+        localPosition.AngleDegrees -= RotationAroundX;
         PositionRotation cutPositionRotation = Carcas.TunnelDetailCut.GetLocalPositionRotation(localPosition);
         PositionRotation curvePositionRotation = Carcas.PositionCurve.GetPositionRotation(localPosition.Depth);
         return GlobalStartPoint + ((curvePositionRotation + cutPositionRotation) *

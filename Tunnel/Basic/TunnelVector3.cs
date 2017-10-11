@@ -42,6 +42,13 @@ public struct TunnelVector3
         _height = height;
     }
 
+    public TunnelVector3(TunnelVector3 preset)
+    {
+        _depth = preset._depth;
+        _angleDegrees = preset._angleDegrees;
+        _height = preset._height;
+    }
+
     public void Rotate(Angle angle)
     {
         _angleDegrees += angle;
@@ -50,16 +57,6 @@ public struct TunnelVector3
     public void Normalize()
     {
         PositionVector = PositionVector.normalized;
-    }
-
-    public bool IsUnitary
-    {
-        get
-        {
-            return (Mathf.Abs(Depth) == 1 || Depth == 0) &&
-                   (Mathf.Abs(AngleDegrees.Value) == 1 || AngleDegrees.Value == 0) &&
-                   (Mathf.Abs(Height) == 1 || Height == 0);
-        }
     }
 
     public static TunnelVector3 operator +(TunnelVector3 vector1, TunnelVector3 vector2)
@@ -124,9 +121,20 @@ public struct TunnelVector3
         return !(vector1 == vector2);
     }
 
+    public static TunnelVector3 operator *(TunnelVector3 vector, float multiplier)
+    {
+        vector.PositionVector *= multiplier;
+        return vector;
+    }
+
     public override int GetHashCode()
     {
         return base.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return "Depth : " + Depth + "; Angle : " + AngleDegrees + "; Height " + Height;
     }
 }
 

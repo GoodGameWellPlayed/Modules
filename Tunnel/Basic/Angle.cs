@@ -103,5 +103,10 @@ public struct Angle
     {
         return new Angle(angle.Value * value);
     }
+
+    public override string ToString()
+    {
+        return Value.ToString();
+    }
 }
 
