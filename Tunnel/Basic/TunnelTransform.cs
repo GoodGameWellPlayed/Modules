@@ -12,13 +12,28 @@ public sealed class TunnelTransform : MonoBehaviour
         get { return _position; }
         set { SetPosition(value); }
     }
+
     public ITunnel Tunnel
     {
         get { return _tunnel; }
         set { SetTunnel(value); }
     }
+
     public bool IsInTunnel { get { return _tunnel != null; } }
 
+    public Transform Transform
+    {
+        get
+        {
+            if (_transform == null)
+            {
+                _transform = transform;
+            }
+            return _transform;
+        }
+    }
+
+    private Transform _transform;
     private TunnelVector3 _position;
     private ITunnel _tunnel;
 
@@ -46,7 +61,7 @@ public sealed class TunnelTransform : MonoBehaviour
         }
 
         _position = position;
-        _tunnel.PutInTunnel(transform, Position);
+        _tunnel.PutInTunnel(Transform, Position);
     }
 }
 

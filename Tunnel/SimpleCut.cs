@@ -16,10 +16,11 @@ public class SimpleCut : ITunnelDetailCut
 
     public PositionRotation GetLocalPositionRotation(TunnelVector3 vector)
     {
+        Quaternion rotation = Quaternion.Euler(vector.AngleDegrees.Value, 0, 0);
         return new PositionRotation()
         {
-            Position = Quaternion.Euler(vector.AngleDegrees.Value, 0, 0) * (Vector3.down * (_radius - vector.Height)),
-            Rotation = Quaternion.Euler(vector.AngleDegrees.Value, 0, 0)
+            Position = rotation * (Vector3.down * (_radius - vector.Height)),
+            Rotation = rotation
         };
     }
 }

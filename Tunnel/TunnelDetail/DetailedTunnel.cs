@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.Profiling;
 
-public class DetailedTunnel : MonoBehaviour, ITunnel
+public class DetailedTunnel : ITunnel
 {
-    //[SerializeField] private MonoBehaviour _detailMap;
-    [SerializeField] private DetailMap _detailMap;
+    private IDetailMap _detailMap;
+    private IPositionRotationCalculator _positionRotationCalculator;
+
+    public DetailedTunnel(IDetailMap detailMap, IPositionRotationCalculator positionRotationCalculator)
+    {
+        _detailMap = detailMap;
+        _positionRotationCalculator = positionRotationCalculator;
+    }
 
     public float Length
     {
@@ -15,11 +22,10 @@ public class DetailedTunnel : MonoBehaviour, ITunnel
 
     public void PutInTunnel(Transform transform, TunnelVector3 globalPosition)
     {
-        float depthBefore;
-
-        ITunnelDetail detail = _detailMap.GetDetail(globalPosition.Depth, out depthBefore);
-        globalPosition.Depth = globalPosition.Depth - depthBefore;
-        PositionRotation position = detail.GetGlobalPositionRotation(globalPosition);
+        float localDepth;
+        TunnelDetail detail = _detailMap.GetDetail(globalPosition.Depth, out localDepth);
+        globalPosition.Depth = globalPosition.Depth - localDepth;
+        PositionRotation position = _positionRotationCalculator.GetPositionRotation(detail, globalPosition);
         position.SetPosition(transform);
     }
 }

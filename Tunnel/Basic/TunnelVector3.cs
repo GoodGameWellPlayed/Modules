@@ -11,6 +11,9 @@ public struct TunnelVector3
 
     public float Depth { get { return _depth; } set { _depth = value; } }
     public Angle AngleDegrees { get { return _angleDegrees; } set { _angleDegrees = value; } }
+    /// <summary>
+    /// 0 - on the perimeter
+    /// </summary>
     public float Height { get { return _height; } set { _height = value; } }
 
     private Vector3 PositionVector

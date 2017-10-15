@@ -1,36 +1,25 @@
 ﻿using UnityEngine;
 
-public class TunnelDetail : ITunnelDetail
+public class TunnelDetail
 {
-    private TunnelDetailCarcas Carcas { get; set; }
-    private PositionRotation GlobalStartPoint { get; set; }
-    private Angle RotationAroundX { get; set; }
-    private Quaternion RotationAroundXQuaternion { get; set; }
-
+    public TunnelDetailCarcas Carcas { get; private set; }
     public float Length { get; private set; }
+    public PositionRotation GlobalStartPoint { get; set; }
+    public Angle TunnelXOffset { get; set; }
 
-    public TunnelDetail(TunnelDetailCarcas carcas, float length, PositionRotation globalPositionOfStartPoint, Angle rotationAroundX)
+    public TunnelDetail(TunnelDetailCarcas carcas, float length, PositionRotation globalStartPoint, Angle rotationAroundX)
     {
         Carcas = carcas;
         Length = length;
 
-        GlobalStartPoint = globalPositionOfStartPoint;
-        RotationAroundX = rotationAroundX;
-        RotationAroundXQuaternion = Quaternion.Euler(RotationAroundX.Value, 0, 0);
+        globalStartPoint.Rotation *= Quaternion.Euler(rotationAroundX.Value, 0, 0);
+        GlobalStartPoint = globalStartPoint;
+        TunnelXOffset = rotationAroundX;
     }
 
-    public PositionRotation GetGlobalPositionRotation(TunnelVector3 localPosition)
+    public TunnelVector3 CenterPoint(float depth)
     {
-        localPosition.AngleDegrees -= RotationAroundX;
-        PositionRotation cutPositionRotation = Carcas.TunnelDetailCut.GetLocalPositionRotation(localPosition);
-        PositionRotation curvePositionRotation = Carcas.PositionCurve.GetPositionRotation(localPosition.Depth);
-        return GlobalStartPoint + ((curvePositionRotation + cutPositionRotation) *
-            RotationAroundXQuaternion);
-    }
-
-    public float GetCentrailPointHeight(float depth, Angle angle)
-    {
-        return Carcas.TunnelDetailCut.GetCentrailPointHeight(depth, angle);
+        return new TunnelVector3(depth, Angle.Zero, Carcas.TunnelDetailCut.GetCentrailPointHeight(depth, Angle.Zero));
     }
 }
 

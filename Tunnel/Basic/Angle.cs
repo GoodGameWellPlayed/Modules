@@ -5,6 +5,7 @@ using UnityEngine;
 public struct Angle
 {
     public static float MaxAngle = 360f;
+    public static Angle Zero = new Angle(0);
 
     [SerializeField] private float _angle;
 

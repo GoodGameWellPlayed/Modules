@@ -1,6 +1,7 @@
 ﻿public interface IDetailMap
 {
-    ITunnelDetail GetDetail(float depth, out float depthBeforeDetail);
+    TunnelDetail GetDetail(float depth, out float localDepth);
     float Length { get; }
+    int DetailsCount { get; }
 }
 
