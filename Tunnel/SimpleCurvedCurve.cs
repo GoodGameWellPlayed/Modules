@@ -3,26 +3,21 @@
 public class SimpleCurvedCurve : IPositionCurve
 {
     private float _radius;
-    private float _length;
-    private Angle _angle;
-    private Vector3 _radiusVector;
 
-    public SimpleCurvedCurve(float radius, float length, Angle angle)
+    public SimpleCurvedCurve(float radius)
     {
         _radius = radius;
-        _length = length;
-        _angle = angle;
-        _radiusVector = Vector3.back * _radius;
     }
 
     public PositionRotation GetPositionRotation(float distance)
     {
-        float ang = distance * _angle.Value / _length;
-        Quaternion angle = Quaternion.Euler(0, ang, 0);
+        Vector3 radius = Vector3.back * _radius;
+        float ang = distance * 180f / (Mathf.PI * _radius);
+        Quaternion rotation = Quaternion.Euler(0, ang, 0);
         return new PositionRotation()
         {
-            Position = _radiusVector - angle * _radiusVector,
-            Rotation = angle
+            Position = radius - (rotation * radius),
+            Rotation = rotation
         };
     }
 }

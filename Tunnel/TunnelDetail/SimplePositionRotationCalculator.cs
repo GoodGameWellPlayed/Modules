@@ -1,20 +1,23 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SimplePositionRotationCalculator : IPositionRotationCalculator
 {
-    public PositionRotation GetEndPoint(TunnelDetail detail)
+    public PositionRotation GetCentralPoint(TunnelDetail detail, float depth)
     {
-        PositionRotation curvePositionRotation = detail.Carcas.PositionCurve.GetPositionRotation(detail.Length);
-        return detail.GlobalStartPoint + curvePositionRotation;
+        Quaternion beginning = Quaternion.Euler(detail.RotationAtTheBeginning.Value, 0, 0);
+        Quaternion beginningReversed = Quaternion.Euler(-detail.RotationAtTheBeginning.Value, 0, 0);
+
+        PositionRotation local = beginning * detail.PositionCurve.GetPositionRotation(depth);
+        local.Rotation *= beginningReversed;
+
+        return detail.GlobalStartPoint + local;
     }
 
     public PositionRotation GetPositionRotation(TunnelDetail detail, TunnelVector3 localPosition)
     {
-        localPosition.AngleDegrees -= detail.TunnelXOffset;
-        PositionRotation cutPositionRotation = detail.Carcas.TunnelDetailCut.GetLocalPositionRotation(localPosition);
-        PositionRotation curvePositionRotation = detail.Carcas.PositionCurve.GetPositionRotation(localPosition.Depth);
-        return detail.GlobalStartPoint + (curvePositionRotation + cutPositionRotation);
+        PositionRotation cutPositionRotation = detail.TunnelDetailCut.GetLocalPositionRotation(localPosition);
+        PositionRotation curvePositionRotation = GetCentralPoint(detail, localPosition.Depth);
+        return curvePositionRotation + cutPositionRotation;
     }
 }
 

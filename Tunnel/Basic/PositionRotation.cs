@@ -28,7 +28,7 @@ public struct PositionRotation
         };
     }
 
-    public static PositionRotation operator *(PositionRotation position, Quaternion rotation)
+    public static PositionRotation operator *(Quaternion rotation, PositionRotation position)
     {
         return new PositionRotation()
         {

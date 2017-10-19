@@ -24,8 +24,16 @@ public class DetailedTunnel : ITunnel
     {
         float localDepth;
         TunnelDetail detail = _detailMap.GetDetail(globalPosition.Depth, out localDepth);
-        globalPosition.Depth = globalPosition.Depth - localDepth;
+        globalPosition.Depth = localDepth;
         PositionRotation position = _positionRotationCalculator.GetPositionRotation(detail, globalPosition);
+        position.SetPosition(transform);
+    }
+
+    public void PutInCenter(Transform transform, float depth)
+    {
+        float localDepth;
+        TunnelDetail detail = _detailMap.GetDetail(depth, out localDepth);
+        PositionRotation position = _positionRotationCalculator.GetCentralPoint(detail, localDepth);
         position.SetPosition(transform);
     }
 }

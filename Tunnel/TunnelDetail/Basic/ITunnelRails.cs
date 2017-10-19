@@ -1,4 +1,5 @@
 ﻿public interface ITunnelRails
 {
-    TunnelVector2 GetRail(TunnelVector3 vector);
+    int Count { get; }
+    TunnelVector2 GetRail(int railId);
 }

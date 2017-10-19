@@ -6,6 +6,7 @@ public struct Angle
 {
     public static float MaxAngle = 360f;
     public static Angle Zero = new Angle(0);
+    public static Angle HalfCircle = new Angle(180f);
 
     [SerializeField] private float _angle;
 
