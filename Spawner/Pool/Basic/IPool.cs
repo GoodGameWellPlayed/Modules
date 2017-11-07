@@ -1,7 +1,15 @@
 ﻿using System;
 
-public interface IPool<T> : IDisposable
+namespace Components.Spawner.Pool
 {
-    T GetFromPool();
-    void ReturnToPool(T poolableObject);
+    /// <summary>
+    /// Интерфейс пула
+    /// </summary>
+    /// <typeparam name="T">Тип объекта, содержащегося в пуле</typeparam>
+    public interface IPool<T> : IDisposable
+    {
+        T GetFromPool();
+        void ReturnToPool(T poolableObject);
+    }
 }
+

@@ -1,7 +1,13 @@
 ﻿using System;
-
-public interface ISpawnableObject
+namespace Components.Spawner
 {
-    void OnAfterSpawn();
-    void OnBeforeDespawn(Action<bool> despawnAction);
+    /// <summary>
+    /// Интерфейс для объектов, которые можно спавнить
+    /// </summary>
+    public interface ISpawnableObject
+    {
+        void OnAfterSpawn();
+        void OnBeforeDespawn(Action<bool> despawnAction);
+    }
 }
+

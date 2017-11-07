@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-public class InputManager : Singleton<InputManager>, IInputManager
+public class InputManager : IInputManager
 {
+    public static InputManager Instance = new InputManager();
+
     private InputDictionary _inputDictionary;
 
     private EmptyInputArguments _emptyInputArguments = new EmptyInputArguments();
@@ -9,7 +11,7 @@ public class InputManager : Singleton<InputManager>, IInputManager
     private static KeyboardInputDevice Keyboard = new KeyboardInputDevice();
     private static MouseInputDevice Mouse = new MouseInputDevice();
 
-    private void Start()
+    private InputManager()
     {
         _inputDictionary = new InputDictionary()
         {

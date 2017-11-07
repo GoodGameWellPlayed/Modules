@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
 
-public class ComponentInstantiator<T> : IObjectInstantiator<T>
+namespace Components.Spawner.Pool.PrefabPool
 {
-    public void DestroySpawnableObject(T spawnableObject)
+    /// <summary>
+    /// Класс - создатель копий объектов типа GameObject при обращении через его компоненты
+    /// </summary>
+    public class ComponentInstantiator<T> : IObjectInstantiator<T>
     {
-        GameObject.Destroy((spawnableObject as Component).gameObject);
-    }
+        public void DestroySpawnableObject(T spawnableObject)
+        {
+            GameObject.Destroy((spawnableObject as Component).gameObject);
+        }
 
-    public T InstantiateObject(T prefab)
-    {
-        return GameObject.Instantiate((prefab as Component).gameObject).GetComponent<T>();
-    }
+        public T InstantiateObject(T prefab)
+        {
+            return GameObject.Instantiate((prefab as Component).gameObject).GetComponent<T>();
+        }
 
-    public void SetObjectActive(T spawnableObject, bool isActive)
-    {
-        (spawnableObject as Component).gameObject.SetActive(isActive);
+        public void SetObjectActive(T spawnableObject, bool isActive)
+        {
+            (spawnableObject as Component).gameObject.SetActive(isActive);
+        }
     }
 }
 

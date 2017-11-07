@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface IResetable
+﻿namespace Components.Common
 {
-    void Reset();
+    public interface IResetable
+    {
+        void Reset();
+    }
 }
+

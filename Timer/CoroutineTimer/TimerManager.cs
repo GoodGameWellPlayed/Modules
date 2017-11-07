@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Components.Common;
 
-public class TimerManager : Singleton<TimerManager>
+namespace Components.Timer
 {
-    
+    public class TimerManager : Singleton<TimerManager>
+    {
+
+    }
 }
+

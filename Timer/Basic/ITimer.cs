@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-public delegate void TimerEventHandler();
-
-public interface ITimer
+﻿namespace Components.Timer
 {
-    void Start();
+    public delegate void TimerEventHandler(object arguments);
 
-    event TimerEventHandler OnExpired;
+    public interface ITimer : IPausable
+    {
+        void Start();
+        void Stop();
 
-    event TimerEventHandler OnTimerTick;
+        bool IsRunning { get; }
+    }
 
-    void Stop();
+    public interface ITickTimer : ITimer
+    {
+        event TimerEventHandler OnTickEvent;
+    }
 
-    bool IsRunning { get; }
-
-    TimeSpan TimePassedFromStart { get; }
+    public interface IExpirationTimer : ITimer
+    {
+        event TimerEventHandler OnExpirationEvent;
+    }
 }
+

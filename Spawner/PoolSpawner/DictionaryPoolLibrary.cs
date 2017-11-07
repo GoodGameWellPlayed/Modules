@@ -1,46 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class DictionaryPoolLibrary : IObjectPoolLibrary
+namespace Components.Spawner.Pool
 {
-    private Dictionary<object, object> _poolsDictionary;
-
-    public DictionaryPoolLibrary()
+    /// <summary>
+    /// Содержит связи между объектами и пулами по принципу словаря
+    /// </summary>
+    public class DictionaryPoolLibrary : IObjectPoolLibrary
     {
-        _poolsDictionary = new Dictionary<object, object>(20);
-    }
+        private Dictionary<object, object> _poolsDictionary;
 
-    public void AddDependency<T>(T poolableObject, IPool<T> pool)
-    {
-        if (!_poolsDictionary.ContainsKey(poolableObject))
+        public DictionaryPoolLibrary()
         {
-            _poolsDictionary.Add(poolableObject, pool);
+            _poolsDictionary = new Dictionary<object, object>(20);
         }
-    }
 
-    public IPool<T> GetPool<T>(T poolableObject)
-    {
-        if (!_poolsDictionary.ContainsKey(poolableObject))
+        public void AddDependency<T>(T poolableObject, IPool<T> pool)
         {
-            return null;
+            if (!_poolsDictionary.ContainsKey(poolableObject))
+            {
+                _poolsDictionary.Add(poolableObject, pool);
+            }
         }
-        return _poolsDictionary[poolableObject] as IPool<T>;
-    }
 
-    public void RemoveDependency<T>(T poolableObject)
-    {
-        if (_poolsDictionary.ContainsKey(poolableObject))
+        public IPool<T> GetPool<T>(T poolableObject)
         {
-            _poolsDictionary.Remove(poolableObject);
+            if (!_poolsDictionary.ContainsKey(poolableObject))
+            {
+                return null;
+            }
+            return _poolsDictionary[poolableObject] as IPool<T>;
         }
-    }
 
-    public void Dispose()
-    {
-        foreach (object pool in _poolsDictionary.Values)
+        public void RemoveDependency<T>(T poolableObject)
         {
-            (pool as IDisposable).Dispose();
+            if (_poolsDictionary.ContainsKey(poolableObject))
+            {
+                _poolsDictionary.Remove(poolableObject);
+            }
         }
-        _poolsDictionary.Clear();
+
+        public void Dispose()
+        {
+            foreach (object pool in _poolsDictionary.Values)
+            {
+                (pool as IDisposable).Dispose();
+            }
+            _poolsDictionary.Clear();
+        }
     }
 }
+

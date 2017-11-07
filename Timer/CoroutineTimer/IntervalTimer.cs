@@ -1,123 +1,97 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
-public class IntervalTimer : ITimer, IPausable
+namespace Components.Timer
 {
-    //TODO Infinite timer
-    private TimeSpan _duration;
-    private TimeSpan _tickTime;
-    private DateTime _timeAtStart;
-
-    private bool _isPaused;
-
-    private int _maxTickCount;
-
-    //TODO actions
-    public IntervalTimer(TimeSpan duration, TimeSpan tickTime, int maxTickCount = -1)
+    public class IntervalTimer : ITickTimer
     {
-        if (tickTime >= duration)
+        public bool IsRunning { get; private set; }
+
+        public event TimerEventHandler OnTickEvent;
+
+        private float _interval;
+        private IStopWatch _stopWatch;
+        private float _interruptedInterval;
+        private bool _isPaused;
+        private Coroutine _coroutine;
+        private bool _shouldInvokeOnFirstTick;
+
+        public IntervalTimer(float interval, bool invokeOnFirstTick = false)
         {
-            Debug.LogError("tickTime should be less than duration");
-        }
-        _duration = duration;
-        _tickTime = tickTime;
-        _maxTickCount = maxTickCount;
-    }
-
-    public bool IsRunning
-    {
-        get;
-        private set;
-    }
-
-    public TimeSpan TimePassedFromStart
-    {
-        get
-        {
-            return CurrentTime - _timeAtStart;
-        }
-    }
-
-    private DateTime CurrentTime
-    {
-        get
-        {
-            return DateTime.Now;
-        }
-    }
-
-    private float TimeLeftSeconds
-    {
-        get
-        {
-            return (float)(_duration.TotalSeconds - TimePassedFromStart.TotalSeconds);
-        }
-    }
-
-    public event TimerEventHandler OnExpired;
-    public event TimerEventHandler OnTimerTick;
-
-    public void Start()
-    {
-        if (!IsRunning)
-        {
-            IsRunning = true;
-            TimerManager.Instance.StartCoroutine(TickTimer());
-        }
-    }
-
-    public void Stop()
-    {
-        if (IsRunning)
-        {
+            _interval = interval;
+            _stopWatch = new RealtimeStopWatch();
             IsRunning = false;
-            TimerManager.Instance.StopCoroutine(TickTimer());
-        }
-    }
-
-    public void Pause()
-    {
-        if (!_isPaused && IsRunning)
-        {
-            _isPaused = true;
-        }
-    }
-
-    public void UnPause()
-    {
-        if (_isPaused)
-        {
-            _isPaused = false;
-        }
-    }
-
-    private IEnumerator TickTimer()
-    {
-        _timeAtStart = CurrentTime;
-        float tickTimeSecond = (float)_tickTime.TotalSeconds;
-
-        int tickCount = 0;
-        int maxTickCount = (int)(TimeLeftSeconds / tickTimeSecond);
-        if (_maxTickCount != -1)
-        {
-            maxTickCount = _maxTickCount;
+            _shouldInvokeOnFirstTick = invokeOnFirstTick;
         }
 
-        while (IsRunning && TimeLeftSeconds > 0)
+        public void Start()
         {
-            yield return new WaitForSeconds(Mathf.Min(TimeLeftSeconds, tickTimeSecond));
-            if (tickCount < maxTickCount)
+            if (IsRunning)
             {
-                tickCount++;
-                OnTimerTick.Invoke();
+                Stop();
+            }
+            IsRunning = true;
+            _coroutine = TimerManager.Instance.StartCoroutine(UpdateTimer());
+        }
+
+        public void Stop()
+        {
+            if (IsRunning)
+            {
+                TimerManager.Instance.StopCoroutine(_coroutine);
+                IsRunning = false;
+                _stopWatch.Stop();
+                _isPaused = false;
+                _interruptedInterval = 0;
             }
         }
-        if (IsRunning)
+
+        public void UnPause()
         {
-            OnExpired.Invoke();
+            if (IsRunning && _isPaused)
+            {
+                _isPaused = false;
+
+                _coroutine = TimerManager.Instance.StartCoroutine(UpdateTimer());
+            }
         }
-        Stop();
+
+        public void Pause()
+        {
+            if (IsRunning && !_isPaused)
+            {
+                _isPaused = true;
+
+                TimerManager.Instance.StopCoroutine(_coroutine);
+                _interruptedInterval += _stopWatch.Stop();
+            }
+        }
+
+        private IEnumerator UpdateTimer()
+        {
+            if (_shouldInvokeOnFirstTick)
+            {
+                InvokeTick();
+            }
+
+            while (IsRunning)
+            {
+                float currentInterval = _interval - _interruptedInterval;
+                _stopWatch.Start();
+                yield return new WaitForSeconds(currentInterval);
+
+                InvokeTick();
+                _interruptedInterval = 0;
+            }
+        }
+
+        private void InvokeTick()
+        {
+            if (OnTickEvent != null)
+            {
+                OnTickEvent.Invoke(null);
+            }
+        }
     }
 }
+

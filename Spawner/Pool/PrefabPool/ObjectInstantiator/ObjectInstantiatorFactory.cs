@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
 
-public static class ObjectInstantiatorFactory
+namespace Components.Spawner.Pool.PrefabPool
 {
-    public static IObjectInstantiator<T> GetObjectInstantiator<T>(T obj)
+    /// <summary>
+    /// Стандартная библиотека генераторов объектов Unity
+    /// </summary>
+    public static class ObjectInstantiatorFactory
     {
-        if (obj is GameObject)
+        public static IObjectInstantiator<T> GetObjectInstantiator<T>(T obj)
         {
-            return new GameObjectInstantiator() as IObjectInstantiator<T>;
+            if (obj is GameObject)
+            {
+                return new GameObjectInstantiator() as IObjectInstantiator<T>;
+            }
+            if (obj is Component)
+            {
+                return new ComponentInstantiator<T>() as IObjectInstantiator<T>;
+            }
+            return null;
         }
-        if (obj is Component)
-        {
-            return new ComponentInstantiator<T>() as IObjectInstantiator<T>;
-        }
-        return null;
     }
 }
+

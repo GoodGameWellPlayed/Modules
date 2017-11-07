@@ -17,7 +17,7 @@ public interface IDurationInputArguments : IInputArguments
 
 public interface IDirectionInputArguments : IInputArguments
 {
-    Vector3 Direction { get; set; }
+    DirectionVector Direction { get; set; }
 }
 
 public class EmptyInputArguments : IInputArguments

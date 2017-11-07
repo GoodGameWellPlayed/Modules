@@ -1,5 +1,11 @@
-﻿public interface ISpawner
+﻿namespace Components.Spawner
 {
-    T Spawn<T>(T prefab);
+    /// <summary>
+    /// Интерфейс спавнера объектов
+    /// </summary>
+    public interface ISpawner
+    {
+        T Spawn<T>(T prefab);
+    }
 }
 

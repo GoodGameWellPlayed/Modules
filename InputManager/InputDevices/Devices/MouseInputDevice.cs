@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MouseInputDevice : IInputDeviceClickable<MouseButtons>,
     IInputDevicePositioned, IInputDeviceHoldable<MouseButtons>
@@ -52,3 +51,4 @@ public enum MouseButtons : int
     Right = 1,
     Middle = 2
 }
+

@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class ErrorMessages
+﻿namespace Components.Common
 {
-    public static string ArgumentsTypeExpectedMessage(string currentTypeName, 
-        string expectedArgumentsTypeName)
+    public static class ErrorMessages
     {
-        return "Arguments sent to the class " + currentTypeName + " should be of type " + expectedArgumentsTypeName;
+        public static string ArgumentsTypeExpectedMessage(string currentTypeName, 
+            string expectedArgumentsTypeName)
+        {
+            return "Arguments sent to the class " + currentTypeName + " should be of type " + expectedArgumentsTypeName;
+        }
     }
 }
+

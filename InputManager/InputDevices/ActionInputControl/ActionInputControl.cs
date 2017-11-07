@@ -14,3 +14,4 @@ public class ActionInputControl : IInputControl
         return _inputAction(arguments);
     }
 }
+

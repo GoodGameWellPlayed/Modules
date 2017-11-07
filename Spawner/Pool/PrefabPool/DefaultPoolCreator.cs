@@ -1,7 +1,14 @@
-﻿public class DefaultPoolCreator : IPoolCreator
+﻿namespace Components.Spawner.Pool.PrefabPool
 {
-    public IPool<T> CreatePool<T>(T prefab)
+    /// <summary>
+    /// Конструктор пула по умолчанию
+    /// </summary>
+    public class DefaultPoolCreator : IPoolCreator
     {
-        return new PrefabPool<T>(prefab);
+        public IPool<T> CreatePool<T>(T prefab)
+        {
+            return new PrefabPool<T>(prefab);
+        }
     }
 }
+

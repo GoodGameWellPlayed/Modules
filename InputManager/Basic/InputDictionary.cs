@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class InputDictionary : Dictionary<InputAttribute, IInputControl>
 {
@@ -30,3 +27,4 @@ public class InputDictionary : Dictionary<InputAttribute, IInputControl>
         return false;
     }
 }
+

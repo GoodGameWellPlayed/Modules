@@ -1,4 +1,11 @@
-﻿public interface IPoolCreator
+﻿namespace Components.Spawner.Pool
 {
-    IPool<T> CreatePool<T>(T prefab);
+    /// <summary>
+    /// Объект, создающий пул
+    /// </summary>
+    public interface IPoolCreator
+    {
+        IPool<T> CreatePool<T>(T prefab);
+    }
 }
+

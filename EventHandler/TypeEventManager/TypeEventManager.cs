@@ -1,58 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class TypeEventManager : Singleton<TypeEventManager>, IEventManager
+namespace Components.EventHandler
 {
-    private Dictionary<Type, List<object>> _listeners;
-    private Dictionary<Type, List<object>> Listeners
+    /// <summary>
+    /// EventManager, записывающий подписчика в структуру данных по типу аргумента,
+    /// который его событие использует
+    /// </summary>
+    public class TypeEventManager : IEventManager
     {
-        get
+        public static TypeEventManager Instance = new TypeEventManager();
+
+        private Dictionary<Type, List<object>> _listeners;
+
+        private TypeEventManager()
         {
-            if (_listeners == null)
+            _listeners = new Dictionary<Type, List<object>>();
+        }
+
+        public void Notify<A>(A arguments, object sender) where A : IEventArguments
+        {
+            Type aType = typeof(A);
+
+            if (_listeners.ContainsKey(aType))
             {
-                _listeners = new Dictionary<Type, List<object>>();
+                for (int i = 0; i < _listeners[aType].Count; i++)
+                {
+                    (_listeners[aType][i] as IEventListener<A>).HandleEvent(arguments, sender);
+                }
             }
-            return _listeners;
         }
-    }
 
-    public void Notify<A>(A arguments, object sender) where A : EventArguments
-    {
-        Type aType = typeof(A);
-
-        if (Listeners.ContainsKey(aType))
+        public void SubscribeListener<A>(IEventListener<A> listener) where A : IEventArguments
         {
-            for (int i = 0; i < Listeners[aType].Count; i++)
+            Type aType = typeof(A);
+
+            if (!_listeners.ContainsKey(aType))
             {
-                (Listeners[aType][i] as IEventListener<A>).HandleEvent(arguments, sender);
+                _listeners.Add(aType, new List<object>(10));
             }
+            _listeners[aType].Add(listener);
         }
-    }
 
-    public void SubscribeListener<A>(IEventListener<A> listener) where A : EventArguments
-    {
-        Type aType = typeof(A);
-
-        if (!Listeners.ContainsKey(aType))
+        public void UnSubscribeListener<A>(IEventListener<A> listener) where A : IEventArguments
         {
-            Listeners.Add(aType, new List<object>(10));
-        }
-        Listeners[aType].Add(listener);
-    }
+            Type aType = typeof(A);
 
-    public void UnSubscribeListener<A>(IEventListener<A> listener) where A : EventArguments
-    {
-        Type aType = typeof(A);
-
-        if (!Listeners.ContainsKey(aType))
-        {
-            return;
-        }
-        //todo not an easy operation
-        Listeners[aType].Remove(listener);
-        if (Listeners[aType].Count == 0)
-        {
-            Listeners.Remove(aType);
+            if (!_listeners.ContainsKey(aType))
+            {
+                return;
+            }
+            //todo not an easy operation
+            _listeners[aType].Remove(listener);
+            if (_listeners[aType].Count == 0)
+            {
+                _listeners.Remove(aType);
+            }
         }
     }
 }
+

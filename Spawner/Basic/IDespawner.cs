@@ -1,4 +1,11 @@
-﻿public interface IDespawner
+﻿namespace Components.Spawner
 {
-    void Despawn<T>(T spawnableObject);
+    /// <summary>
+    /// Интерфейс для деспавнера объектов
+    /// </summary>
+    public interface IDespawner
+    {
+        void Despawn<T>(T spawnableObject);
+    }
 }
+

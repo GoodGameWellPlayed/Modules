@@ -1,34 +1,40 @@
 ﻿using UnityEngine;
 
-public abstract class Singleton<T> : MonoBehaviour where T : Component
+namespace Components.Common
 {
-    private static T _instance;
-
-    public static T Instance
+    public abstract class Singleton<T> : MonoBehaviour where T : Component
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<T>();
+        private static T _instance;
 
+        public static T Instance
+        {
+            get
+            {
                 if (_instance == null)
                 {
-                    Debug.LogError("Instance of " + typeof(T) + " is not present on a scene");
-                }
-            }
+                    _instance = FindObjectOfType<T>();
 
-            return _instance;
+                    if (_instance == null)
+                    {
+                        GameObject newGameObject = new GameObject();
+                        newGameObject.name = typeof(T).Name;
+                        _instance = newGameObject.AddComponent<T>();
+                    }
+                }
+
+                return _instance;
+            }
+        }
+
+        private void Awake()
+        {
+            _instance = this as T;
+            OnAwake();
+        }
+
+        protected virtual void OnAwake()
+        {
         }
     }
-
-    private void Awake()
-    {
-        _instance = this as T;
-        OnAwake();
-    }
-
-    protected virtual void OnAwake()
-    {
-    }
 }
+

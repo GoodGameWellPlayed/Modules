@@ -1,8 +1,15 @@
 ﻿using System;
 
-public interface IObjectPoolLibrary : IDisposable
+namespace Components.Spawner.Pool
 {
-    void AddDependency<T>(T poolableObject, IPool<T> pool);
-    void RemoveDependency<T>(T poolableObject);
-    IPool<T> GetPool<T>(T poolableObject);
+    /// <summary>
+    /// Интерфейс библиотеки пулов. Возвращает пул для конкретного объекта
+    /// </summary>
+    public interface IObjectPoolLibrary : IDisposable
+    {
+        void AddDependency<T>(T poolableObject, IPool<T> pool);
+        void RemoveDependency<T>(T poolableObject);
+        IPool<T> GetPool<T>(T poolableObject);
+    }
 }
+
