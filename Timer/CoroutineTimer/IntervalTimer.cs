@@ -16,12 +16,12 @@ namespace Components.Timer
         private Coroutine _coroutine;
         private bool _shouldInvokeOnFirstTick;
 
-        public IntervalTimer(float interval, bool invokeOnFirstTick = false)
+        public IntervalTimer(float interval, bool shouldInvokeOnFirstTick = false)
         {
             _interval = interval;
             _stopWatch = new RealtimeStopWatch();
             IsRunning = false;
-            _shouldInvokeOnFirstTick = invokeOnFirstTick;
+            _shouldInvokeOnFirstTick = shouldInvokeOnFirstTick;
         }
 
         public void Start()
@@ -78,6 +78,7 @@ namespace Components.Timer
             {
                 float currentInterval = _interval - _interruptedInterval;
                 _stopWatch.Start();
+
                 yield return new WaitForSeconds(currentInterval);
 
                 InvokeTick();
