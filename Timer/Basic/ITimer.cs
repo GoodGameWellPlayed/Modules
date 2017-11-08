@@ -1,8 +1,8 @@
 ﻿namespace Components.Timer
 {
-    public delegate void TimerEventHandler(object arguments);
+    public delegate void TimerAction();
 
-    public interface ITimer : IPausable
+    public interface ITimer
     {
         void Start();
         void Stop();
@@ -10,14 +10,14 @@
         bool IsRunning { get; }
     }
 
-    public interface ITickTimer : ITimer
+    public interface ITickActionHandler
     {
-        event TimerEventHandler OnTickEvent;
+        event TimerAction OnTickTimer;
     }
 
-    public interface IExpirationTimer : ITimer
+    public interface IExpiredActionHandler
     {
-        event TimerEventHandler OnExpirationEvent;
+        event TimerAction OnExpiredTimer;
     }
 }
 

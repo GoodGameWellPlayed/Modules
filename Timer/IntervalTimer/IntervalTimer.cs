@@ -3,24 +3,25 @@ using UnityEngine;
 
 namespace Components.Timer
 {
-    public class IntervalTimer : ITickTimer
+    public class IntervalTimer : ITimer, IPausable, ITickActionHandler
     {
         public bool IsRunning { get; private set; }
 
-        public event TimerEventHandler OnTickEvent;
+        public event TimerAction OnTickTimer;
 
         private float _interval;
-        private IStopWatch _stopWatch;
+        private StopWatch _stopWatch;
         private float _interruptedInterval;
         private bool _isPaused;
-        private Coroutine _coroutine;
+        private IEnumerator _coroutine;
         private bool _shouldInvokeOnFirstTick;
 
-        public IntervalTimer(float interval, bool shouldInvokeOnFirstTick = false)
+        public IntervalTimer(float interval, bool shouldInvokeOnFirstTick = false, ITimeGetter timeGetter = null)
         {
             _interval = interval;
-            _stopWatch = new RealtimeStopWatch();
+            _stopWatch = new StopWatch(timeGetter);
             IsRunning = false;
+            _coroutine = UpdateTimer();
             _shouldInvokeOnFirstTick = shouldInvokeOnFirstTick;
         }
 
@@ -31,7 +32,7 @@ namespace Components.Timer
                 Stop();
             }
             IsRunning = true;
-            _coroutine = TimerManager.Instance.StartCoroutine(UpdateTimer());
+            TimerManager.Instance.StartCoroutine(_coroutine);
         }
 
         public void Stop()
@@ -40,6 +41,7 @@ namespace Components.Timer
             {
                 TimerManager.Instance.StopCoroutine(_coroutine);
                 IsRunning = false;
+
                 _stopWatch.Stop();
                 _isPaused = false;
                 _interruptedInterval = 0;
@@ -52,7 +54,7 @@ namespace Components.Timer
             {
                 _isPaused = false;
 
-                _coroutine = TimerManager.Instance.StartCoroutine(UpdateTimer());
+                TimerManager.Instance.StartCoroutine(_coroutine);
             }
         }
 
@@ -63,7 +65,8 @@ namespace Components.Timer
                 _isPaused = true;
 
                 TimerManager.Instance.StopCoroutine(_coroutine);
-                _interruptedInterval += _stopWatch.Stop();
+                _stopWatch.Stop();
+                _interruptedInterval += _stopWatch.TimeInSeconds;
             }
         }
 
@@ -71,26 +74,25 @@ namespace Components.Timer
         {
             if (_shouldInvokeOnFirstTick)
             {
-                InvokeTick();
+                InvokeEvent();
             }
 
             while (IsRunning)
             {
                 float currentInterval = _interval - _interruptedInterval;
                 _stopWatch.Start();
-
                 yield return new WaitForSeconds(currentInterval);
 
-                InvokeTick();
+                InvokeEvent();
                 _interruptedInterval = 0;
             }
         }
 
-        private void InvokeTick()
+        private void InvokeEvent()
         {
-            if (OnTickEvent != null)
+            if (OnTickTimer != null)
             {
-                OnTickEvent.Invoke(null);
+                OnTickTimer.Invoke();
             }
         }
     }
