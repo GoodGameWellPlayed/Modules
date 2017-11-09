@@ -9,15 +9,5 @@
 
         bool IsRunning { get; }
     }
-
-    public interface ITickActionHandler
-    {
-        event TimerAction OnTickTimer;
-    }
-
-    public interface IExpiredActionHandler
-    {
-        event TimerAction OnExpiredTimer;
-    }
 }
 

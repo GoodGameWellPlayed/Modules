@@ -1,17 +1,29 @@
 ﻿namespace Components.Timer
 {
-    public class ExpirationTimer : ITimer, IPausable, IExpiredActionHandler
+    public class ExpirationTimer : ITimer, IPausable
     {
-        private IntervalTimer _intervaTimer;
+        private IntervalTimer _intervalTimer;
 
-        public bool IsRunning { get { return _intervaTimer.IsRunning; } }
+        public bool IsRunning { get { return _intervalTimer.IsRunning; } }
+        public float ExpirationTime
+        {
+            get
+            {
+                return _intervalTimer.Interval;
+            }
+            set
+            {
+                _intervalTimer.Interval = value;
+            }
+        }
 
         public event TimerAction OnExpiredTimer;
 
-        public ExpirationTimer(float time, ITimeGetter timeGetter = null)
+        public ExpirationTimer(float time, bool shouldChangeTimeImmediate = false, 
+            ITimeGetter timeGetter = null)
         {
-            _intervaTimer = new IntervalTimer(time, false, timeGetter);
-            _intervaTimer.OnTickTimer += TimerTick;
+            _intervalTimer = new IntervalTimer(time, false, shouldChangeTimeImmediate, timeGetter);
+            _intervalTimer.OnTickTimer += TimerTick;
         }
 
         private void TimerTick()
@@ -20,28 +32,29 @@
             {
                 OnExpiredTimer.Invoke();
             }
-            _intervaTimer.Stop();
-        }
-
-        public void Pause()
-        {
-            _intervaTimer.Pause();
-        }
-
-        public void Stop()
-        {
-            _intervaTimer.Stop();
-        }
-
-        public void UnPause()
-        {
-            _intervaTimer.UnPause();
+            Stop();
         }
 
         public void Start()
         {
-            _intervaTimer.Start();
+            _intervalTimer.Start();
         }
+
+        public void Stop()
+        {
+            _intervalTimer.Stop();
+        }
+
+        public void Pause()
+        {
+            _intervalTimer.Pause();
+        }
+
+        public void UnPause()
+        {
+            _intervalTimer.UnPause();
+        }
+
     }
 }
 
