@@ -12,7 +12,7 @@ namespace Components.Timer
             set
             {
                 _interval = value;
-                if (IsRunning && !_isPaused && _shouldChangeIntervalImmediate)
+                if (IsRunning && !_isPaused)
                 {
                     Pause();
                     UnPause();
@@ -28,16 +28,13 @@ namespace Components.Timer
         private bool _isPaused;
         private Coroutine _coroutine;
         private bool _shouldInvokeOnStart;
-        private bool _shouldChangeIntervalImmediate;
 
-        public IntervalTimer(float interval, bool shouldInvokeOnStart = false, 
-            bool shouldChangeIntervalImmediate = true, ITimeGetter timeGetter = null)
+        public IntervalTimer(float interval, bool shouldInvokeOnStart = false, ITimeGetter timeGetter = null)
         {
             _interval = interval;
             _stopWatch = new StopWatch(timeGetter);
             IsRunning = false;
             _shouldInvokeOnStart = shouldInvokeOnStart;
-            _shouldChangeIntervalImmediate = shouldChangeIntervalImmediate;
         }
 
         private void StartCoroutine()

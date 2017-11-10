@@ -19,10 +19,9 @@
 
         public event TimerAction OnExpiredTimer;
 
-        public ExpirationTimer(float time, bool shouldChangeTimeImmediate = false, 
-            ITimeGetter timeGetter = null)
+        public ExpirationTimer(float time, ITimeGetter timeGetter = null)
         {
-            _intervalTimer = new IntervalTimer(time, false, shouldChangeTimeImmediate, timeGetter);
+            _intervalTimer = new IntervalTimer(time, false, timeGetter);
             _intervalTimer.OnTickTimer += TimerTick;
         }
 
