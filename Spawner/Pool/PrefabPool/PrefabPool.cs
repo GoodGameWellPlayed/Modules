@@ -56,10 +56,11 @@ namespace Components.Spawner.Pool.PrefabPool
 
         public void ReturnToPool(T poolableObject)
         {
-            _ready.Enqueue(poolableObject);
-            _pooled.Remove(poolableObject);
-
-            SetObjectActive(poolableObject, false);
+            if (_pooled.Remove(poolableObject))
+            {
+                _ready.Enqueue(poolableObject);
+                SetObjectActive(poolableObject, false);
+            }
         }
 
         private void InstantiateObject(bool isActive)
