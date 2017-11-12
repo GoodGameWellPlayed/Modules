@@ -5,7 +5,7 @@
     /// </summary>
     public interface IPoolCreator
     {
-        IPool<T> CreatePool<T>(T prefab);
+        IPool<T> CreatePool<T>(T prefab, int objectsCount);
     }
 }
 

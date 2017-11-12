@@ -8,18 +8,23 @@ namespace Components.Spawner.Pool
     /// </summary>
     public class PoolSpawner : ISpawner, IDespawner, IDisposable
     {
+        private const int DefaultObjectsCount = 10;
+
         public IObjectPoolLibrary _objectPoolLibrary;
         private IPoolCreator _poolCreator;
+        private int _objectsCount;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="objectPoolLibrary">Библиотека пулов. Используется для нахождения пула объекта по объекту или его префабу</param>
         /// <param name="poolCreator">Создатель пулов. Переопределяется при необходимости переопределения конструктора пулов</param>
-        public PoolSpawner(IObjectPoolLibrary objectPoolLibrary = null, IPoolCreator poolCreator = null)
+        public PoolSpawner(int objectsCount = DefaultObjectsCount, IObjectPoolLibrary objectPoolLibrary = null, 
+            IPoolCreator poolCreator = null)
         {
             _objectPoolLibrary = objectPoolLibrary ?? new DictionaryPoolLibrary();
             _poolCreator = poolCreator ?? new DefaultPoolCreator();
+            _objectsCount = objectsCount;
         }
 
         /// <summary>
@@ -59,7 +64,7 @@ namespace Components.Spawner.Pool
 
         public void GeneratePool<T>(T prefab)
         {
-            _objectPoolLibrary.AddDependency(prefab, CreatePool(prefab));
+            _objectPoolLibrary.AddDependency(prefab, CreatePool(prefab, _objectsCount));
         }
 
         /// <summary>
@@ -73,7 +78,7 @@ namespace Components.Spawner.Pool
             IPool<T> pool = _objectPoolLibrary.GetPool(prefab);
             if (pool == null)
             {
-                pool = CreatePool(prefab);
+                pool = CreatePool(prefab, _objectsCount);
                 _objectPoolLibrary.AddDependency(prefab, pool);
             }
 
@@ -88,9 +93,9 @@ namespace Components.Spawner.Pool
             return spawnedObject;
         }
 
-        private IPool<T> CreatePool<T>(T prefab)
+        public IPool<T> CreatePool<T>(T prefab, int objectsCount)
         {
-            return _poolCreator.CreatePool(prefab);
+            return _poolCreator.CreatePool(prefab, objectsCount);
         }
     }
 }

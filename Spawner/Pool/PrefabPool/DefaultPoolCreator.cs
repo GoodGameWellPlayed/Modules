@@ -5,9 +5,9 @@
     /// </summary>
     public class DefaultPoolCreator : IPoolCreator
     {
-        public IPool<T> CreatePool<T>(T prefab)
+        public IPool<T> CreatePool<T>(T prefab, int objectsCount)
         {
-            return new PrefabPool<T>(prefab);
+            return new PrefabPool<T>(prefab, true, objectsCount);
         }
     }
 }
