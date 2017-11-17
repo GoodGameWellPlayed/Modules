@@ -37,22 +37,11 @@ namespace Components.Spawner.Pool
             IPool<T> pool = _objectPoolLibrary.GetPool(spawnableObject);
             if (pool != null)
             {
-                Action<bool> despawnAction = (shouldDespawn) =>
-                {
-                    if (shouldDespawn)
-                    {
-                        pool.ReturnToPool(spawnableObject);
-                    }
-                };
-
                 if (spawnableObject is ISpawnableObject)
                 {
-                    (spawnableObject as ISpawnableObject).OnBeforeDespawn(despawnAction);
+                    (spawnableObject as ISpawnableObject).OnBeforeDespawn();
                 }
-                else
-                {
-                    despawnAction(true);
-                }
+                pool.ReturnToPool(spawnableObject);
             }
             return;
         }

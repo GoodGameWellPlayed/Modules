@@ -7,7 +7,7 @@ namespace Components.Spawner
     public interface ISpawnableObject
     {
         void OnAfterSpawn();
-        void OnBeforeDespawn(Action<bool> despawnAction);
+        void OnBeforeDespawn();
     }
 }
 
