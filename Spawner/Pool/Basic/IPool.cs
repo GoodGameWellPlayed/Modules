@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Components.Spawner.Pool
 {
@@ -10,6 +11,7 @@ namespace Components.Spawner.Pool
     {
         T GetFromPool();
         void ReturnToPool(T poolableObject);
+        IEnumerator<T> PooledObjects(Func<T, bool> predicate = null);
     }
 }
 

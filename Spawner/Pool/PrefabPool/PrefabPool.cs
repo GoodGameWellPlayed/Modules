@@ -93,6 +93,18 @@ namespace Components.Spawner.Pool.PrefabPool
         {
             ObjectInstantiator.DestroySpawnableObject(spawnableObject);
         }
+
+        public IEnumerator<T> PooledObjects(Func<T, bool> predicate = null)
+        {
+            for (int i = 0; i < _pooled.Count; i++)
+            {
+                T pooledObject = _pooled[i];
+                if (predicate == null || predicate.Invoke(pooledObject))
+                {
+                    yield return pooledObject;
+                }
+            }
+        }
     }
 }
 
